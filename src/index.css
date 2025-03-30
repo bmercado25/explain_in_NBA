@@ -1,0 +1,217 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+
+* {
+  font-family: "Oswald", sans-serif;
+}
+
+body {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  min-height: 100vh; 
+  justify-content: center;
+  background-image: url("https://s7d2.scene7.com/is/image/TWCNews/Lakers_Lebron_James_AP_Golden_State_Los_Angeles_2025");
+  background-size: cover; /* Ensures the image covers the entire background */
+  background-position: center top; /* Centers the image */
+  background-repeat: space; /* Prevents the image from repeating */
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.9); /* Adjust the color & opacity */
+  z-index: -1;
+}
+
+main-button {    /* Set button height */
+  padding: 10px 20px; /* Adjust inner spacing */
+  font-size: 16px;    /* Size of text inside button */
+  font-weight: bold;  /* Makes text stand out */
+  border: none;       /* Remove default button border */
+  border-radius: 8px; /* Smooth rounded corners */
+  background-color: #007bff; /* Button color (blue) */
+  color: black;       /* Text color */
+  cursor: pointer;    /* Change cursor on hover */
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Hover effect */
+.main-button:hover {
+  background-color: #e88700;
+}
+
+/* Optional: Add responsiveness */
+@media (max-width: 200px) {
+  .main-button {
+    width: 45px;
+    height: 45px;
+    font-size: 30px;
+  }
+}
+
+.chatbot-popup {
+  position: relative;
+  width: 600px;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 20px 120px 0 rgba(0, 0 ,0 ,0.2),
+    0 32px 64px -60px rgba(0,0,0, 0.4);
+}
+
+.chatbot-popup .chat-header {
+  display: flex;
+  padding: 15px 22px;
+  align-items: center;
+  justify-content: space-between;
+  background:#c9c9c7
+}
+
+.chat-header .header-info{
+  display:flex;
+  gap: 10px;
+  align-items:center;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.header-info img{
+  height: 40px;
+  width: 40px;
+  padding: 5px;
+  background:rgba(0,0,0, .6);
+  border-radius: 100%;
+  animation: spin 5s linear infinite; 
+}
+
+.header-info .logo-t{
+  font-size: 1.7rem;
+  font-weight: 450;
+}
+
+.chat-header .main-button{
+  height: 40px;
+  width: 40px;
+  border:none;
+  outline: none;
+  color: #000000;
+  cursor:pointer;
+  border-radius: 50%;
+  padding-top:5px;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.chat-body{
+  height: 300px;
+  width: 100%;
+  overflow-y: auto;
+  padding: 25px 22px;
+  flex-direction: column;
+  display: flex;
+  gap: 20px;
+}
+
+.chat-body .message{
+  flex-direction: column;
+  display:flex;  
+  width: 95%;
+}
+
+.chat-body .message .message-text{
+  background: #c9c9c7;
+  border-radius: 3cqb;
+  padding:12px 16px;
+  max-width:50%;
+  overflow-wrap: break-word; 
+  word-wrap: break-word;
+  white-space: pre-line;
+}
+
+
+.chat-body .message-l {
+  display: flex;
+  align-items: flex-start;
+}
+
+.chat-body .message-l .message-text{
+  word-wrap: break-word;  /* Allows wrapping of long words */
+  word-break: break-word;  /* Force long words to break */
+  overflow-wrap: break-word; /* Ensures long words break and don't overflow */
+  white-space: pre-line;  
+}
+
+.chat-body .message-r {
+  display: flex;
+  align-items: flex-end;
+}
+
+.chat-body .message-r .message-text{
+  word-wrap: break-word;  /* Allows wrapping of long words */
+  word-break: break-word;  /* Force long words to break */
+  overflow-wrap: break-word; /* Ensures long words break and don't overflow */
+  white-space: pre-line;  
+}
+
+.chat-foot{
+  position: absolute;
+  bottom: 0;
+  width: 100%; 
+  background: #fff;
+  padding: 15px 22px 20px;
+}
+
+.chat-foot .chat-form{
+  display: flex;
+  align-items: center;
+  background: #fff;
+  outline: 0.5px solid #8c8c8c;
+  border-radius: 32px;
+  max-width: 85%;
+  box-shadow:  0 0  8px rgba(0, 0 ,0 ,0.03s);
+  transition: outline 0.1s ease-in-out;
+}
+
+.chat-foot .chat-form:focus-within{
+  outline: 2px solid #e88700;
+}
+
+.chat-form .message-input{
+  border: none;
+  outline: none;
+  background: none;
+  width: 80%;
+  height: 47px;
+  padding: 0 17px;
+  font-size: 0.95rem;
+}
+
+.chat-form button{
+  background: transparent;
+  border: none;
+  display: none;
+  border: none;
+  transition: color 0.08s ease-in-out;
+  cursor: pointer;
+  transition: 0.2 ease;
+}
+
+.chat-form button:hover {
+  color: #e88700;
+}
+
+.chat-form .message-input:valid~button{
+  display: block;
+}
+
+
