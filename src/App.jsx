@@ -6,8 +6,13 @@ https://www.youtube.com/watch?v=5fiXEGdEK10&t=1105s -> App structure based off t
 
 
 import Icon from "./Components/icon"
+import ChatForm from "./Components/chatf"
+import ChatMessage from "./Components/chatm";
+import { useState } from "react";
 
 const App = () => {
+  const [chatHistory, setChatHistory] = useState([]);
+
   return (
     <div className = "container">
       <div className = "chatbot-popup"> {/*Chat Message Screen Div*/}
@@ -25,19 +30,13 @@ const App = () => {
           <p className = "message-text"> {/*contents*/} 
             Placeholder bot<br />
           </p>
-          <div className ="message message-r"> {/*chat elemets from user, right-hand*/} 
-          <p className = "message-text">
-            placeholder Input <br /> 
-          </p>
-          
-          </div>
+
+          {chatHistory.map((chat, index) => (
+            <ChatMessage key ={index} chat ={chat} / > ))}
+
           </div>
         <div className="chat-foot"> {/*begin footer, body of where message is inputed by user*/}
-        <form action="#" className="chat-form"> {/*message form, input*/}
-          <input type="text" placeholder="Message..." 
-          className="message-input" required /> {/*message form button, for submission*/}
-          <button className="material-symbols-outlined">circle</button> 
-        </form>
+        <ChatForm setChatHistory = {setChatHistory} />
         </div>
         </div>
       </div> 
