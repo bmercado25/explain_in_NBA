@@ -2,7 +2,7 @@
 
 import React, { useRef } from 'react'
 
-const ChatForm = ({setChatHistory}) => {
+const ChatForm = ({ chatHistory, setChatHistory, generateBotResponse}) => {
     const inputRef = useRef();
 
     const handleSumbission = (e) => {
@@ -14,6 +14,12 @@ const ChatForm = ({setChatHistory}) => {
         {/*Chat history prop*/}
         setChatHistory(history => [...history, {role : "r", text: userInput}]);
 
+        {/* Bot handling logic, calls bot message and then generate bot response function, present in app file */}
+        setTimeout(() => {
+        setChatHistory((history) => [...history, {role : "l", text: "Thinking.."}]);
+
+        generateBotResponse([...chatHistory, {role : "r", text: userInput}]);
+    } , 600)
     };
 
     return(

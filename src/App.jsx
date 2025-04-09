@@ -13,6 +13,11 @@ import { useState } from "react";
 const App = () => {
   const [chatHistory, setChatHistory] = useState([]);
 
+  const generateBotResponse = (history) => {
+    console.log(history);
+
+  }
+
   return (
     <div className = "container">
       <div className = "chatbot-popup"> {/*Chat Message Screen Div*/}
@@ -30,14 +35,15 @@ const App = () => {
           <p className = "message-text"> {/*contents*/} 
             Placeholder bot<br />
           </p>
+        </div>
 
           {chatHistory.map((chat, index) => (
-            <ChatMessage key ={index} chat ={chat} / > ))}
+            <ChatMessage key={index} chat={chat} />
+          ))}
 
-          </div>
-        <div className="chat-foot"> {/*begin footer, body of where message is inputed by user*/}
-        <ChatForm setChatHistory = {setChatHistory} />
         </div>
+        <div className="chat-foot"> {/*begin footer, body of where message is inputed by user*/}
+        <ChatForm chatHistory={chatHistory} setChatHistory = {setChatHistory} generateBotResponse = {generateBotResponse} />
         </div>
       </div> 
     </div>
