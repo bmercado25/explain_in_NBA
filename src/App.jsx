@@ -8,15 +8,53 @@ https://www.youtube.com/watch?v=5fiXEGdEK10&t=1105s -> App structure based off t
 import Icon from "./Components/icon"
 import ChatForm from "./Components/chatf"
 import ChatMessage from "./Components/chatm";
-import { useState } from "react";
+import { useState, useEffect, useRef} from "react";
 
 const App = () => {
   const [chatHistory, setChatHistory] = useState([]);
+  const chatBodyRef = useRef(null); 
 
-  const generateBotResponse = (history) => {
-    console.log(history);
+  const generateBotResponse = async(history) => {
 
-  }
+    //Helper to update chat
+    const updateHistory = (text) => {
+      setChatHistory(prev => [...prev.filter(msg => msg.text !== "Thinking.."), {role: "l", text}]);
+    }
+
+
+    history = history.map(({ role, text }) => ({
+      role: role === "r" ? "user" : "model", //Maps r and l roles to required formatting for API
+      parts: [{ text }]
+    }));
+     {/*format chat history for API call*/}
+
+    const requestOptions ={
+      method: "POST",
+      headers: {"Content-Type" : "application/json"},
+      body: JSON.stringify({contents: history})
+    };
+
+    try{
+      {/* API CALL */}
+      const response = await fetch(import.meta.env.VITE_API_URL, requestOptions);
+      const data = await response.json();
+
+      if(!response.ok) throw new Error(data.error.message || "Error");
+
+      // update model response in chat window
+      const modelResponse = data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g, "$1").trim();
+      updateHistory(modelResponse);
+    } catch(error){
+      console.log(error);
+    }
+  };
+
+    // Scroll to bottom whenever chatHistory updates
+  useEffect(() => {
+    if (chatBodyRef.current) {
+      chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+    }
+  }, [chatHistory]);
 
   return (
     <div className = "container">
@@ -30,7 +68,7 @@ const App = () => {
         <span className="material-symbols-outlined">circle</span> </button> 
         </div>
 
-        <div className="chat-body"> {/*Body of chat bot*/} 
+        <div className="chat-body" ref={chatBodyRef}> {/*Body of chat bot*/} 
           <div className ="message message-l"> {/*chat elements from chatbot, left-hand*/} 
           <p className = "message-text"> {/*contents*/} 
             Placeholder bot<br />

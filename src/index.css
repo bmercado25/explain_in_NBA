@@ -126,10 +126,22 @@ main-button {    /* Set button height */
   scroll-behavior: smooth;
 }
 
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .chat-body .message{
   flex-direction: column;
   display:flex;  
   width: 95%;
+  animation: fadeInUp 0.5s ease-out;
 }
 
 .chat-body .message .message-text{
