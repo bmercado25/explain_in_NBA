@@ -38,6 +38,7 @@ const App = () => {
       {/* API CALL */}
       const response = await fetch(import.meta.env.VITE_API_URL, requestOptions);
       const data = await response.json();
+      console.log(data);
 
       if(!response.ok) throw new Error(data.error.message || "Error");
 
