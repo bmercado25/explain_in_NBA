@@ -1,0 +1,17 @@
+TODO:
+
+*in step format*
+
+1.Flesh out back end to handle POST (send-conversation) and GET (fetch conversation/s)
+- Database connectivity, figure out how to send and recieve data from MongoDB using ID and Conversation number parameters given
+- POST needs to support data parse from user, retrieve an ID  # unique to each user, and a coversation ID# unique to user (figure out how to handle instances in REACT)
+- GET must take user ID and Conversation ID as dyanmic params (Conversation ID dynamic param of user ID) and fetch form the database accordingly 
+
+2.Front-end
+- have some kind of scrollable multi-screen approach to each conversation window??? too advanced? we'll see 
+- Main button must handle POST and GET for the client, send to either another page that displays the content 
+
+NEXT STEPS: 
+-configure get and post (dont worry too much about id and conversation no., maybe we'll start by overriding every entry for testing)
+-have the button go to a new page and call the get and post methods and display content on page, it's ok if it's still in json but if there is an easy way to make it
+human readable, than that will be the way to go

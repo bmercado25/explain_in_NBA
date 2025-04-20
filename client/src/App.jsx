@@ -15,7 +15,6 @@ const App = () => {
   const chatBodyRef = useRef(null); 
 
   const generateBotResponse = async(history) => {
-
     //Helper to update chat
     const updateHistory = (text) => {
       setChatHistory(prev => [...prev.filter(msg => msg.text !== "Thinking.."), {role: "l", text}]);
@@ -72,7 +71,7 @@ const App = () => {
         <div className="chat-body" ref={chatBodyRef}> {/*Body of chat bot*/} 
           <div className ="message message-l"> {/*chat elements from chatbot, left-hand*/} 
           <p className = "message-text"> {/*contents*/} 
-            Placeholder bot<br />
+            Hello! I am the explain in NBA terms bot! Ask me anything and I'll explain it in NBA terms.<br />
           </p>
         </div>
 
