@@ -20,6 +20,15 @@ const App = () => {
       setChatHistory(prev => [...prev.filter(msg => msg.text !== "Thinking.."), {role: "l", text}]);
     }
 
+        // Pre-prompt: Add a message at the beginning of the chat history that gives context to the model
+    const prePrompt = {
+      role: "system", 
+      text: "You are a helpful assistant who explains any concept, breifly in specifically NBA terms after the 1980s, but dont mention that; in terms of history of players, events, statistics, as applicable as possible. If you are asked to elaborate, you will, but breifly as well. If you can apply concepts to obscure players, or controversies associated with players, do that as well. If you can compare it to an event, situation, statistical spread etc. do that first."
+    };
+
+    // Add the pre-prompt to the start of the history
+    history = [{ role: "system", text: prePrompt.text }, ...history];
+
 
     history = history.map(({ role, text }) => ({
       role: role === "r" ? "user" : "model", //Maps r and l roles to required formatting for API
@@ -42,13 +51,53 @@ const App = () => {
       if(!response.ok) throw new Error(data.error.message || "Error");
 
       // update model response in chat window
-      const modelResponse = data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g, "$1").trim();
+      // const modelResponse = data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g, "$1").trim();
+
+      const modelResponse = data.candidates[0].content.parts[0].text
+      .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")  // Replace **text** with <b>text</b>
+      .replace(/^\* /gm, "") // Remove bullet points represented by "* " at the beginning of lines
+      .trim();
+    
+    
+
       updateHistory(modelResponse);
     } catch(error){
       console.log(error);
     }
   };
+  
+ const handleMainButtonClick = async () => {
+    try {
+      
+      const postRequestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chatHistory })  // Send entire chat history
+      };
 
+      const postChatHistory = await fetch("http://localhost:8080/api/PostChatHistory", postRequestOptions); // Adjust URL if needed
+      const postData = await postChatHistory.json();
+
+      if (!postChatHistory.ok) {
+        throw new Error(postData.error.message || "Error sending chat history");
+      }
+
+      // Step 2: Fetch the same data from the backend via GET request after POST
+      const getResponse = await fetch("http://localhost:8080/api/getChatHistory", { method: "GET" });
+
+      if (!getResponse.ok) {
+        throw new Error("Error fetching chat history");
+      }
+
+      const getData = await getResponse.json();
+      console.log(getData);
+
+      console.log("Chat history sent successfully:", postData);
+
+    } catch (error) {
+      console.error("Error:", error);
+    }
+ };
     // Scroll to bottom whenever chatHistory updates
   useEffect(() => {
     if (chatBodyRef.current) {
@@ -64,7 +113,7 @@ const App = () => {
             <Icon />
             <h2 className = "logo-t">Explain this in NBA terms</h2>
           </div>
-        <button className = "main-button">
+        <button className = "main-button" onClick={handleMainButtonClick}>
         <span className="material-symbols-outlined">circle</span> </button> 
         </div>
 
