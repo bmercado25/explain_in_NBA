@@ -21,5 +21,11 @@ app.post('/api/PostChatHistory', (req, res) => {
 });
 
 app.get('/api/getChatHistory', (req, res) => {
-    res.json({ storedBody });
+    if (storedBody) {
+        // Return stored data only if it exists
+        res.json({ storedBody });
+    } else {
+        // If no data has been stored, return a helpful message
+        res.status(404).json({ message: 'No chat history available' });
+    }
 });
