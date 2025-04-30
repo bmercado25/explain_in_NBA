@@ -71,23 +71,30 @@ const Home = () => {
   };
 
   const handleMainButtonClick = async () => {
+    const ID = 1;
+
+    
     try {
       const postRequestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chatHistory })
+        body: JSON.stringify({ 
+          deviceID: ID,
+          history: chatHistory })
       };
 
+      /*
       const postChatHistory = await fetch("http://localhost:8080/api/PostChatHistory", postRequestOptions);
       const postData = await postChatHistory.json();
       if (!postChatHistory.ok) throw new Error(postData.error.message || "Error sending chat history");
+      */
 
-      const getResponse = await fetch("http://localhost:8080/api/getChatHistory");
+      const getResponse = await fetch("http://localhost:8080/api/getChatHistory?deviceID=${ID}");
       if (!getResponse.ok) throw new Error("Error fetching chat history");
 
       const getData = await getResponse.json();
       console.log(getData);
-      console.log("Chat history sent successfully:", postData);
+      /*console.log("Chat history sent successfully:", postData);*/
 
       navigate('/viewprevchat');
     } catch (error) {
