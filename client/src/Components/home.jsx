@@ -9,15 +9,36 @@ const Home = () => {
   const navigate = useNavigate();
   const [chatHistory, setChatHistory] = useState([]);
   const chatBodyRef = useRef(null);
+  const [thinking, setThinking] = useState(false);
 
   const generateBotResponse = async (history) => {
+    let thinkingInterval;
+    setThinking(true);
+
+    // Animate the dots
+    thinkingInterval = setInterval(() => {
+      setChatHistory(prev => {
+        return prev.map(msg =>
+          msg.text.startsWith("Thinking") && msg.role === "l"
+            ? { ...msg, text: msg.text.length < 12 ? msg.text + "." : "Thinking" }
+            : msg
+        );
+      });
+    }, 500);
+  
     const updateHistory = (text) => {
-      setChatHistory(prev => [...prev.filter(msg => msg.text !== "Thinking.."), { role: "l", text }]);
+      clearInterval(thinkingInterval);
+      setThinking(false);
+  
+      setChatHistory(prev => [
+        ...prev.filter(msg => !(msg.role === "l" && msg.text.startsWith("Thinking"))),
+        { role: "l", text }
+      ]);
     };
 
     const prePrompt = {
       role: "system",
-      text: "You are a helpful assistant who explains any concept, briefly in specifically NBA terms after the 1980s, but don't mention that; in terms of history of players, events, statistics, as applicable as possible. If you are asked to elaborate, you will, but briefly as well. If you can apply concepts to obscure players, or controversies associated with players, do that as well. If you can compare it to an event, situation, statistical spread etc. do that first."
+      text: "You are a helpful assistant who explains any concept, briefly in specifically NBA terms after the 1980s, but don't mention that; in terms of history of players, events, statistics, as applicable as possible. If you are asked to elaborate, you will, but briefly as well. If you can apply concepts to obscure players, or controversies associated with players, do that as well. If you can compare it to an event, situation, statistical spread etc. do that first. Make sure you separate the information often with single returns, so it's easily readable"
     };
 
     history = [{ role: "system", text: prePrompt.text }, ...history];

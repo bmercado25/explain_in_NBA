@@ -31,19 +31,23 @@ const Test = () => {
     }, []);
 
     return (
-        <div>
-            <button onClick={handleBackButton} style={{ padding: '10px 20px', fontSize: '16px', borderRadius: '5px' }}></button>
-            <h1>Previous Chat History</h1>
-            <div>
-                {chatData.length > 0 ? (
-                    <ul>
-                        {chatData.map((chat, index) => (
-                            <li key={index}>{chat.text}</li> // Assuming `text` is the property you're displaying
-                        ))}
-                    </ul>
-                ) : (
-                    <p>No previous chat history found.</p>
-                )}
+        <div classname = "container"> 
+
+        
+            <div className="chatbot-popup">
+                <button onClick={handleBackButton} style={{ padding: '10px 20px', fontSize: '16px', borderRadius: '5px' }}></button>
+                <h1>Previous Chat History</h1>
+                <div padding = "20px">
+                    {chatData.length > 0 ? (
+                        <ul>
+                            {chatData.map((chat, index) => (
+                                <li key={index}>{chat.text}</li> // Assuming `text` is the property you're displaying
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>No previous chat history found.</p>
+                    )}
+                </div>
             </div>
         </div>
     );
