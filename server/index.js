@@ -33,7 +33,14 @@ const client = new MongoClient(uri, {
       if (!deviceID || !Array.isArray(history)) {
         return res.status(400).json({ error: 'Invalid request format' });
       }
-  
+
+      if (history.length === 0) {
+        console.log('Received an empty history array.');
+        res.status(200).json({status: 'no history to store'});
+        // Optionally, you could set history to a default value, if needed:
+        // req.body.history = someDefaultValue;
+      }
+      else {
       try {
         const lastChat = await chatCollection.findOne({ deviceID }, { sort: { index: -1 } });
         const newIndex = lastChat ? lastChat.index + 1 : 0;
@@ -50,7 +57,8 @@ const client = new MongoClient(uri, {
       } catch (error) {
         console.error('Error saving to MongoDB:', error);
         res.status(500).json({ error: 'Internal server error' });
-      }
+    }
+    }
     });
   
     // GET route

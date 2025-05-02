@@ -4,12 +4,15 @@ import Icon from "./icon";
 import ChatForm from "./chatf";
 import ChatMessage from "./chatm";
 import Test from "./viewprevchat";
+import { useLocation } from 'react-router-dom'
 
 const Home = () => {
   const navigate = useNavigate();
-  const [chatHistory, setChatHistory] = useState([]);
+  const location = useLocation();
+  const [chatHistory, setChatHistory] = useState(location.state?.selectedEntry.history || []);
   const chatBodyRef = useRef(null);
   const [thinking, setThinking] = useState(false);
+
 
   const generateBotResponse = async (history) => {
     let thinkingInterval;
@@ -73,7 +76,6 @@ const Home = () => {
   const handleMainButtonClick = async () => {
     const ID = 1;
 
-    
     try {
       const postRequestOptions = {
         method: "POST",
@@ -83,11 +85,10 @@ const Home = () => {
           history: chatHistory })
       };
 
-      /*
       const postChatHistory = await fetch("http://localhost:8080/api/PostChatHistory", postRequestOptions);
       const postData = await postChatHistory.json();
       if (!postChatHistory.ok) throw new Error(postData.error.message || "Error sending chat history");
-      */
+      
 
       const getResponse = await fetch("http://localhost:8080/api/getChatHistory?deviceID=${ID}");
       if (!getResponse.ok) throw new Error("Error fetching chat history");
