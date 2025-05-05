@@ -1,7 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
+import "./test.css"
 
 const Test = () => {
+  const words = [
+    'Brick', 'Fraud', 'Washed', 'Mickey Ring', 'Bubble', 
+    'Superteam', 'Ratio', 'Legacy', 'Mid', 'Cooked',
+    'Agenda', 'Casual', 'Burner', 'Carry', 'Goat',
+    'LeGOAT', 'Steff', 'Jokgod', 'Kuminga', 'Fraudulent',
+    'Spida', 'Dpooy', 'MVP', 'Statpad',
+    'Rimrunner', 'Hooper', 'Pipedream'
+  ];
+  
+  const getRandomWord = () => {
+    const randomIndex = Math.floor(Math.random() * words.length);
+    return words[randomIndex];
+  };
+
   const [chatData, setChatData] = useState([]);
   const navigate = useNavigate();
 
@@ -34,31 +49,42 @@ const Test = () => {
   return (
     <div className="container">
       <div className="chatbot-popup">
-        <button onClick={handleBackButton} style={{ padding: '10px 20px', fontSize: '16px', borderRadius: '5px' }}>
-          Back
-        </button>
-        <h1>See What Everyone Else has Been Explaining in NBA Terms</h1>
+        <div className="chat-header">
+          <div className="header-info">
+            <h2>See What Everyone Else has Been Explaining in NBA Terms</h2>
+            <button className="main-button" onClick={handleBackButton}>
+              <span className="material-symbols-outlined">circle</span>
+            </button>
+          </div>
+        </div>
         <div style={{ padding: "20px" }}>
           {chatData.length > 0 ? (
-            chatData.map((session, index) => (
-              <div key={index} style={{ marginBottom: "20px", paddingBottom: "10px", borderBottom: "1px solid #ccc" }}>
-                <h3>Chat #{session.index + 1 ?? index}</h3>
-                <button onClick={() => handleprev(session)}>Action</button>
-                <ul>
-                  {Array.isArray(session.history) ? (
-                    session.history.slice(0,10).map((entry, i) => {
-                      const entryrole = (entry.role == 'r' ? 'User' : 'Bot'); 
-                      return (
-                      <li key={i}><strong>{entryrole}:</strong> {entry.text}
-                      </li>
-                    );
-                  })
-                  ) : (
-                    <li>No messages</li>
-                  )}
-                </ul>
-              </div>
-            ))
+            <div className="chat-container">
+              {chatData.slice().map((session, index) => (
+                <div key={index} className="chat-session">
+                  <div className="prev-chat-header"><h3>Chat {getRandomWord()}</h3></div>
+                  <ul>
+                    {Array.isArray(session.history) ? (
+                      session.history.slice(0, 10).map((entry, i) => {
+                        const entryrole = entry.role == "r" ? "User" : "Bot";
+                        return (
+                          <div className="chat-box" key={i}>
+                            <div className="chat-message">
+                              {entryrole}:&nbsp;{entry.text}
+                            </div>
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <li>No messages</li>
+                    )}
+                  </ul>
+                  <button className="continue-button" onClick={() => handleprev(session)}>
+                    Continue this Conversation
+                  </button>
+                </div>
+              ))}
+            </div>
           ) : (
             <p>No previous chat history found.</p>
           )}
@@ -66,6 +92,6 @@ const Test = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Test;

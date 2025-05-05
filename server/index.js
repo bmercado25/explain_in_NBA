@@ -64,18 +64,18 @@ const client = new MongoClient(uri, {
     // GET route
     app.get('/api/getChatHistory', async (req, res) => {
       const { deviceID } = req.query;
-  
+    
       if (!deviceID) {
-        return res.status(400).json({ error: 'Missing deviceID' });
+      return res.status(400).json({ error: 'Missing deviceID' });
       }
-  
+    
       try {
-        const history = await chatCollection.find({ deviceID: Number(deviceID) }).sort({ index: 1 }).toArray();
-        res.status(200).json({ history });
-        console.log(history);
+      const history = await chatCollection.find({ deviceID: Number(deviceID) }).sort({ index: -1 }).limit(5).toArray();
+      res.status(200).json({ history });
+      console.log(history);
       } catch (error) {
-        console.error(' Error fetching history:', error);
-        res.status(500).json({ error: 'Internal server error' });
+      console.error(' Error fetching history:', error);
+      res.status(500).json({ error: 'Internal server error' });
       }
     });
   
