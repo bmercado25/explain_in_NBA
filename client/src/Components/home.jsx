@@ -6,7 +6,11 @@ import ChatMessage from "./chatm";
 import Test from "./viewprevchat";
 import { useLocation } from 'react-router-dom'
 
+
+
 const Home = () => {
+  const backend = import.meta.env.VITE_BACKEND_URL; 
+
   const navigate = useNavigate();
   const location = useLocation();
   const [chatHistory, setChatHistory] = useState(location.state?.selectedEntry.history || []);
@@ -84,13 +88,12 @@ const Home = () => {
           deviceID: ID,
           history: chatHistory })
       };
-
-      const postChatHistory = await fetch("http://localhost:8080/api/PostChatHistory", postRequestOptions);
+      const postChatHistory = await fetch(`${backend}/api/PostChatHistory`, postRequestOptions);
       const postData = await postChatHistory.json();
       if (!postChatHistory.ok) throw new Error(postData.error.message || "Error sending chat history");
       
 
-      const getResponse = await fetch("http://localhost:8080/api/getChatHistory?deviceID=${ID}");
+      const getResponse = await fetch(`${backend}/api/getChatHistory?deviceID=${ID}`);
       if (!getResponse.ok) throw new Error("Error fetching chat history");
 
       const getData = await getResponse.json();

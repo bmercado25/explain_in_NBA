@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import "./test.css"
 
+
+
 const Test = () => {
+  const backend = import.meta.env.VITE_BACKEND_URL; 
+
   const words = [
     'Brick', 'Fraud', 'Washed', 'Mickey Ring', 'Bubble', 
     'Superteam', 'Ratio', 'Legacy', 'Mid', 'Cooked',
@@ -31,7 +35,7 @@ const Test = () => {
   const getPrevChat = async () => {
     try {
       const deviceID = 1; // Make sure this matches your stored deviceID TODO, i think im gonna keep this as a constant for now to implement later;
-      const getResponse = await fetch(`http://localhost:8080/api/getChatHistory?deviceID=${deviceID}`);
+      const getResponse = await fetch(`${backend}/api/getChatHistory?deviceID=${deviceID}`);
       if (!getResponse.ok) throw new Error("Error fetching chat history");
       const getData = await getResponse.json();
       console.log(getData);
@@ -65,12 +69,12 @@ const Test = () => {
                   <div className="prev-chat-header"><h3>Chat {getRandomWord()}</h3></div>
                   <ul>
                     {Array.isArray(session.history) ? (
-                      session.history.slice(0, 10).map((entry, i) => {
+                      session.history.slice(0, 2).map((entry, i) => {
                         const entryrole = entry.role == "r" ? "User" : "Bot";
                         return (
                           <div className="chat-box" key={i}>
                             <div className="chat-message">
-                              {entryrole}:&nbsp;{entry.text}
+                            {entryrole}:&nbsp;{entry.text.length > 100 ? entry.text.slice(0, 100) + '...' : entry.text}
                             </div>
                           </div>
                         );
@@ -86,12 +90,11 @@ const Test = () => {
               ))}
             </div>
           ) : (
-            <p>No previous chat history found.</p>
+            <p>No one here yet, phew. 🦗</p>
           )}
         </div>
       </div>
     </div>
   );
-}
-
+          }
 export default Test;
